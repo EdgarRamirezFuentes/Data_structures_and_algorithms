@@ -2,20 +2,37 @@
 
 int main() {
     SinglyLinkedList<int> my_list;
-    my_list.show_list(); // The list is empty
     my_list.push_front(5); // 5
     my_list.push_front(4); // 4 5
     my_list.push_front(3); // 3 4 5
     my_list.push_front(2); // 2 3 4 5 
     my_list.push_front(1); // 1 2 3 4 5
-    my_list.show_list(); // 1 2 3 4 5
     my_list.push_back(6); // 1 2 3 4 5 6
     my_list.push_back(7); // 1 2 3 4 5 6 7
     my_list.push_back(8); // 1 2 3 4 5 6 7 8
-    my_list.show_list(); // 1 2 3 4 5 6 7 8
-    std::cout << my_list.get_size() << std::endl; // 8
+    my_list.show_list();
+    my_list.push_nth_position(0, -1); // 0 1 2 3 4 5 6 7 8
+    my_list.show_list();
+    my_list.push_nth_position(9, 10); // 0 1 2 3 4 5 6 7 8 9
+    my_list.show_list();
+    my_list.push_nth_position(1, 1); // 1 0 1 2 3 4 5 6 7 8 9
+    my_list.show_list();
+    my_list.push_nth_position(4, 4); // 1 0 1 4 2 3 4 5 6 7 8 9
+    my_list.show_list();
+    my_list.reverse_list(); // 9 8 7 6 5 4 3 2 4 1 0 1 
+    my_list.show_list();
+    my_list.push_front(10); // 10 9 8 7 6 5 4 3 2 4 1 0 1
+    my_list.show_list(); 
+    my_list.push_back(-1); // 10 9 8 7 6 5 4 3 2 4 1 0 1 -1 
+    my_list.show_list();
+    my_list.reverse_list(); // -1 1 0 1 4 2 3 4 5 6 7 8 9 10 
+    my_list.show_list();
+    std::cout << my_list.get_size() << std::endl; // 14
 
-    /*SinglyLinkedList<std::string> *my_list2 = new SinglyLinkedList<std::string>();
+    /*
+    Using templates to create lists of different data types
+
+    SinglyLinkedList<std::string> *my_list2 = new SinglyLinkedList<std::string>();
     my_list2->show_list(); // nullptr
     my_list2->push_front("R"); // R
     my_list2->push_front("A"); // A R

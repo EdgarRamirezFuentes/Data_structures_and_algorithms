@@ -10,7 +10,7 @@ struct Node {
 
 	/**
      *  Constructor
-     *  @param value Integer used to initial value of the node
+     *  @param value Integer used to initialize the value of the node
      */ 
 	Node (T value) : value(value), next(nullptr) {}
 };
@@ -19,10 +19,10 @@ template <typename T>
 class SinglyLinkedList {
 	public:
 		Node<T> *head;
-		// Constructor
+		/// Constructor
         SinglyLinkedList() : head(nullptr), tail(nullptr), size(0) {}
 
-        // Destructor
+        /// Destructor
         ~SinglyLinkedList() {
             Node<T> *aux = nullptr;
             while (head) {
@@ -35,17 +35,26 @@ class SinglyLinkedList {
         }
 
 		/**
-        * Returns wether the list is empty.
-        * true -> The list is empty
-        * false -> The list is not empty
-		*/
+         *  Complexity:
+         *  Time -> O(1) 
+         *  Memory -> O(1) 
+         *  
+         *  Check if the list is empty.  
+         *  
+         *  @return true if the list is empty, or false if the list has
+         *          at least one node
+		 */
 		bool is_empty() {
-			// Operador ternario
+            // return (head == nullptr ? true : false);
 			return !(head);
 		}
 
         /**
-         * Print each node of the list
+         *  Complexity: 
+         *  Time -> O(n) 
+         *  Memory -> O(1) 
+         *  
+         *   Print the value of each node in the list. 
          */
 		void show_list() {
 			Node<T> *aux = nullptr;
@@ -64,15 +73,20 @@ class SinglyLinkedList {
 		}
 
         /**
-         * Add a new node at the beginning of the list
+         *  Complexity: 
+         *  Time -> O(1) 
+         *  Memory -> O(1) 
+         *  
+         *   Add a new node at the beginning of the list. 
+         *  
+         *   @param value Integer used to initialize the value of the new node 
          */
         void push_front(T value) {
             Node<T> *aux = nullptr;
             Node<T> *new_node = nullptr;
             new_node = new Node<T>(value);
-            // The node was created successfully
             if (new_node) {
-                // Increases the size of the current list
+                // The node was created successfully
                 size++;
                 if (is_empty()) {
                     head = new_node;
@@ -85,6 +99,15 @@ class SinglyLinkedList {
             }
         }
 
+        /**
+         *  Complexity: 
+         *  Time -> O(1) 
+         *  Memory -> O(1) 
+         *  
+         *   Add a new node at the end of the list. 
+         *  
+         *   @param value Integer used to initialize the value of the new node 
+         */
         void push_back(T value) {
             Node<T> *aux = nullptr;
             Node<T> *new_node = nullptr;
@@ -101,13 +124,84 @@ class SinglyLinkedList {
             }
         }
 
+        /**
+         *  Complexity: 
+         *  Time -> O(1) 
+         *  Memory -> O(1) 
+         *  
+         *  Check the current size of the list. 
+         *  
+         *  @return the current size of the list 
+         */ 
         size_t get_size() {
             return size;
         }
 
+        /**
+         *  Add a new node at the nth position of the list. 
+         *  
+         *  If the position is less or equal than 1, the node will be pushed 
+         *  at the beginning of the list. 
+         *  
+         *  if the position is greater than the size of the list, the node will be pushed 
+         *  at the end of the list. 
+         *  
+         *  The first position of the list is 1. 
+         *  
+         *   @param value Integer used to initialize the value of the new node
+         *   @param position Integer used to know in which position the new node
+                    will be pushed.
+        */
+        void push_nth_position(int value, int position) {
+            if (is_empty() || position <= 1) {
+                push_front(value);
+                return;
+            } else if(position > size) {
+                push_back(value);
+                return;
+            }
+            int counter = 1;
+            Node<T> *aux = nullptr;
+            Node<T> *new_node = nullptr;
+            aux = head;
+            while (counter < position - 1) {
+                aux = aux->next;
+                ++counter;
+            }
+            new_node = new Node<T>(value);
+            if (new_node) {
+                // The new node was created successfully
+                new_node->next = aux->next;
+                aux->next = new_node;
+                size++;
+            }
+        }
+        
+        /**
+         *  Reverse the list 
+         */ 
+        void reverse_list() {
+            Node<T> *prev = nullptr;
+            Node<T> *current = nullptr;
+            Node<T> *next = nullptr;
+            // Set the new tail
+            tail = head;
+            current = head;
+            // Reverse the list
+            while (current) {
+                next = current->next;
+                current->next = prev;
+                prev = current;
+                current = next;
+            }
+
+            // Set the new head
+            head = prev;
+        }
 
     private:
         size_t size;
+        /// Keep track of the last node added at the end of the list
         Node<T> *tail;
 };
 
