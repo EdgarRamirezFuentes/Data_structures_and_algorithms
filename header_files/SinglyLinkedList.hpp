@@ -19,14 +19,20 @@ struct Node {
      *  @param value Integer used to initialize the value of the node
      */ 
 	Node (T value) : value(value), next(nullptr) {}
+
+    /// Destructor
+    ~Node() {}
 };
 
 template <typename T>
 class SinglyLinkedList {
 public:
 	Node<T> *head;
-	/// Constructor
-	SinglyLinkedList();
+	/**
+     *  Constructor
+     *  Create an empty Singly Linked List
+     */
+	SinglyLinkedList() : head(nullptr), tail(nullptr), size(0) {}
 
 	/// Destructor
 	~SinglyLinkedList();
@@ -39,18 +45,15 @@ public:
 	size_t get_size();
 	void push_nth_position(T, int);
 	void reverse_list();
+    void pop_back();
+    void pop_front();
 
 private:
 	size_t size;
 	/// Keep track of the last node added at the end of the list
 	Node<T> *tail;
+    Node<T>* find_new_tail();
 };
-
-#include "../header_files/SinglyLinkedList.hpp"
-
-/// Constructor
-template <typename T>
-SinglyLinkedList<T>::SinglyLinkedList() : head(nullptr), tail(nullptr), size(0) {}
 
 /// Destructor
 template <typename T>
@@ -98,7 +101,7 @@ void SinglyLinkedList<T>::show_list() {
         return;
     }
 
-    while (aux) {
+    while (aux != nullptr) {
         std::cout << aux->value << " ";
         aux = aux->next;
     }
@@ -174,6 +177,10 @@ size_t SinglyLinkedList<T>::get_size() {
 }
 
 /**
+ *  Complexity:
+ *  Time -> O(n)
+ *  Memory -> O(1)
+ *  
  *  Add a new node at the nth position of the list. 
  *  
  *  If the position is less or equal than 1, the node will be pushed 
@@ -215,6 +222,10 @@ void SinglyLinkedList<T>::push_nth_position(T value, int position) {
 }
 
 /**
+ *  Complexity:
+ *  Time -> O(n)
+ *  Memory -> O(1)
+ * 
  *  Reverse the list 
  */ 
 template <typename T>
@@ -235,6 +246,73 @@ void SinglyLinkedList<T>::reverse_list() {
 
     // Set the new head
     head = prev;
+}
+
+/**
+ *  Complexity:
+ *  Time -> O(n)
+ *  Memory -> O(1)
+ *  
+ *  Delete the last node of the list, and set the new tail
+*/
+
+template<typename T>
+void SinglyLinkedList<T>::pop_back() {
+    Node<T>* new_tail = nullptr;
+    if (is_empty()) {return;}
+    if (size == 1) {
+        delete head;
+        head = nullptr;
+        tail = nullptr;
+    } else {// Two or more nodes
+        new_tail = find_new_tail();
+        tail = new_tail;
+        delete tail->next;
+        tail->next = nullptr;
+    }
+    size--;
+}
+
+/**
+ *  Complexity:
+ *  Time -> O(n)
+ *  Memory -> O(1)
+ *  
+ *  Find the node before the "behind" the tail of the list
+ *  @return the node "behind" the tail of the list
+*/
+template <typename T>
+Node<T>* SinglyLinkedList<T>::find_new_tail() {
+    Node<T> *new_tail = nullptr;
+    new_tail = head;
+    while (new_tail->next != tail) {
+        new_tail = new_tail->next;
+    }
+    // Found the last node
+    return new_tail;
+}
+
+/**
+ *  Complexity:
+ *  Time -> O(1)
+ *  Memory -> O(1)
+ *  
+ *  Delete the first node of the list, and set the new head
+*/
+template <typename T>
+void SinglyLinkedList<T>::pop_front() {
+    Node<T> *new_head = nullptr;
+    if(is_empty()) {return;}
+    if (size == 1) {
+        delete head;
+        head = nullptr;
+        tail = nullptr;
+    } else {
+        // two or more nodes 
+        new_head = head->next;
+        delete head;
+        head = new_head;
+    }
 }
 
 #endif /* SINGLYLINKEDLIST_HPP */

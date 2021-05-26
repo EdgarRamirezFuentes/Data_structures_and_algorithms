@@ -8,12 +8,9 @@
 #include "../header_files/SinglyLinkedList.hpp"
 
 int main(void) {
-    std::cout << "Hola mundo" << std::endl;
     // LinkedList
     SinglyLinkedList<int> myList;
-    myList.push_front(1);
-    myList.push_back(2);
+    myList.push_back(5);
     myList.show_list();
-
     return 0;
 }
