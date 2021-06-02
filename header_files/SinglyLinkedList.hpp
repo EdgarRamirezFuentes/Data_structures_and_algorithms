@@ -27,7 +27,6 @@ struct Node {
 template <typename T>
 class SinglyLinkedList {
 public:
-	Node<T> *head;
 	/**
      *  Constructor
      *  Create an empty Singly Linked List
@@ -38,20 +37,22 @@ public:
 	~SinglyLinkedList();
 
 	/// Methods
-	bool is_empty();
-	void show_list();
+	bool is_empty(void);
+	void show_list(void);
 	void push_front(T);
 	void push_back(T);
-	size_t get_size();
+	size_t get_size(void);
 	void push_nth_position(T, int);
-	void reverse_list();
-    void pop_back();
-    void pop_front();
-
+	void reverse_list(void);
+    void pop_back(void);
+    void pop_front(void);
+    T get_head_value(void);
+    T get_tail_value(void);
 private:
+    Node<T> *head;
+    Node<T> *tail;
 	size_t size;
 	/// Keep track of the last node added at the end of the list
-	Node<T> *tail;
     Node<T>* find_new_tail();
 };
 
@@ -79,20 +80,20 @@ SinglyLinkedList<T>::~SinglyLinkedList() {
  *          at least one node
  */
 template <typename T>
-bool SinglyLinkedList<T>::is_empty() {
+bool SinglyLinkedList<T>::is_empty(void) {
     // return (head == nullptr ? true : false);
     return !(head);
 }
 
 /**
  *  Complexity: 
- *  Time -> O(n) 
+ *  Time -> O(n) , where n is the size of the list
  *  Memory -> O(1) 
  *  
  *   Print the value of each node in the list. 
  */
 template <typename T>
-void SinglyLinkedList<T>::show_list() {
+void SinglyLinkedList<T>::show_list(void) {
     Node<T> *aux = nullptr;
     aux = head;
     
@@ -172,13 +173,13 @@ void SinglyLinkedList<T>::push_back(T value) {
  *  @return the current size of the list 
  */ 
 template <typename T>
-size_t SinglyLinkedList<T>::get_size() {
+size_t SinglyLinkedList<T>::get_size(void) {
     return size;
 }
 
 /**
  *  Complexity:
- *  Time -> O(n)
+ *  Time -> O(n), where n is the size of the list
  *  Memory -> O(1)
  *  
  *  Add a new node at the nth position of the list. 
@@ -223,13 +224,13 @@ void SinglyLinkedList<T>::push_nth_position(T value, int position) {
 
 /**
  *  Complexity:
- *  Time -> O(n)
+ *  Time -> O(n), where n is the size of the list
  *  Memory -> O(1)
  * 
  *  Reverse the list 
  */ 
 template <typename T>
-void SinglyLinkedList<T>::reverse_list() {
+void SinglyLinkedList<T>::reverse_list(void) {
     Node<T> *prev = nullptr;
     Node<T> *current = nullptr;
     Node<T> *next = nullptr;
@@ -250,14 +251,14 @@ void SinglyLinkedList<T>::reverse_list() {
 
 /**
  *  Complexity:
- *  Time -> O(n)
+ *  Time -> O(n), where n is the size of the list
  *  Memory -> O(1)
  *  
  *  Delete the last node of the list, and set the new tail
 */
 
 template<typename T>
-void SinglyLinkedList<T>::pop_back() {
+void SinglyLinkedList<T>::pop_back(void) {
     Node<T>* new_tail = nullptr;
     if (is_empty()) {return;}
     if (size == 1) {
@@ -275,14 +276,14 @@ void SinglyLinkedList<T>::pop_back() {
 
 /**
  *  Complexity:
- *  Time -> O(n)
+ *  Time -> O(n), where n is the size of the list
  *  Memory -> O(1)
  *  
  *  Find the node before the "behind" the tail of the list
  *  @return the node "behind" the tail of the list
 */
 template <typename T>
-Node<T>* SinglyLinkedList<T>::find_new_tail() {
+Node<T>* SinglyLinkedList<T>::find_new_tail(void) {
     Node<T> *new_tail = nullptr;
     new_tail = head;
     while (new_tail->next != tail) {
@@ -300,7 +301,7 @@ Node<T>* SinglyLinkedList<T>::find_new_tail() {
  *  Delete the first node of the list, and set the new head
 */
 template <typename T>
-void SinglyLinkedList<T>::pop_front() {
+void SinglyLinkedList<T>::pop_front(void) {
     Node<T> *new_head = nullptr;
     if(is_empty()) {return;}
     if (size == 1) {
@@ -313,6 +314,34 @@ void SinglyLinkedList<T>::pop_front() {
         delete head;
         head = new_head;
     }
+}
+
+/**
+ * Complexity:
+ * Time -> O(1)
+ * Memory -> O(1)
+ * 
+ * Get and return the value on the head of the list
+ * 
+ * @return the value that contains the head of the list
+ */ 
+template <typename T>
+T SinglyLinkedList<T>::get_head_value(void) {
+    return this->head->value;
+}
+
+/**
+ * Complexity:
+ * Time -> O(1)
+ * Memory -> O(1)
+ * 
+ * Get and return the value on the tail of the list
+ * 
+ * @return the value that contains the tail of the list
+ */ 
+template <typename T>
+T SinglyLinkedList<T>::get_tail_value(void) {
+    return this->tail->value;
 }
 
 #endif /* SINGLYLINKEDLIST_HPP */
