@@ -1,5 +1,5 @@
 /*
-    File name: SinglyLinkedList.hpp
+    File name: SinglyLinkedList.cpp
     Author: Edgar Ramírez
     Last modification date: 05/25/2021
 */

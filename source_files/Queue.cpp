@@ -1,3 +1,10 @@
+/*
+    File name: Queue.cpp
+    Author: Edgar Ramírez
+    Last modification date: 06/01/2021
+    Repository Link: https://github.com/EdgarRamirezFuentes/Data_structures_and_algorithms
+*/
+
 #include "../header_files/Queue.hpp"
 
 int main(void) {

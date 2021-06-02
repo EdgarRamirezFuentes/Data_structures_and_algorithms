@@ -1,7 +1,8 @@
 /*
     File name: SinglyLinkedList.hpp
     Author: Edgar Ramírez
-    Last modification date: 05/25/2021
+    Last modification date: 06/01/2021
+    Repository Link: https://github.com/EdgarRamirezFuentes/Data_structures_and_algorithms
 */
 
 #ifndef SINGLYLINKEDLIST_HPP

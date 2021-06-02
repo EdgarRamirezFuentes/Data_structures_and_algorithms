@@ -1,3 +1,10 @@
+/*
+    File name: Queue.hpp
+    Author: Edgar Ramírez
+    Last modification date: 06/01/2021
+    Repository Link: https://github.com/EdgarRamirezFuentes/Data_structures_and_algorithms
+*/
+
 #ifndef QUEUE_HPP
 #define QUEUE_HPP
 
