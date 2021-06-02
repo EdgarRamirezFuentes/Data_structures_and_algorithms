@@ -42,7 +42,7 @@ Queue<T>::~Queue() {
  *  Time -> O(1) 
  *  Memory -> O(1) 
  *  
- *  Check if the list is empty.  
+ *  Check if the queue is empty.  
  *  
  *  @return true if the queue is empty, or false if the queue has
  *          at least one element
