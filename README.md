@@ -14,6 +14,8 @@ This repository is used to storage my implementations of data structures and alg
 ## Current Data structures and algorithms implementations  
 
 - Singly Linked List
+- Queue
+- Stack
 
 #### [See the header files](./header_files)
 ## Getting Started <a name = "getting_started"></a>
