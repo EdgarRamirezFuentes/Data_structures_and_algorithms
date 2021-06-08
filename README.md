@@ -16,6 +16,7 @@ This repository is used to storage my implementations of data structures and alg
 - Singly Linked List
 - Queue
 - Stack
+- Binary Search Tree
 
 #### [See the header files](./header_files)
 ## Getting Started <a name = "getting_started"></a>
