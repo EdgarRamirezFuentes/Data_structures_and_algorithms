@@ -1,7 +1,7 @@
 /*
     File name: BinarySearchTree.cpp
     Author: Edgar Ramírez
-    Last modification date: 06/07/2021
+    Last modification date: 06/08/2021
     Repository Link: https://github.com/EdgarRamirezFuentes/Data_structures_and_algorithms
 */
 
@@ -22,6 +22,7 @@ int main() {
     tree.add_node(70);
     tree.add_node(40);
     tree.add_node(60);
+    tree.delete_node(100);
     std::cout << "BFS: ";
     tree.breadth_first_search_traversal();
     return 0;

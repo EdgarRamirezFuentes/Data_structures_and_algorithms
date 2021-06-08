@@ -1,7 +1,7 @@
 /*
     File name: BinarySearchTree.hpp
     Author: Edgar Ramírez
-    Last modification date: 06/07/2021
+    Last modification date: 06/08/2021
     Repository Link: https://github.com/EdgarRamirezFuentes/Data_structures_and_algorithms
 */
 
@@ -32,13 +32,17 @@ public:
     void preorder_traversal(void);
     void posorder_traversal(void);
     void inorder_traversal(void);
-    void delete_node(void);
+    void delete_node(T);
     void breadth_first_search_traversal(void);
 private:
+    TreeNode<T>* root;
+    void reconnect_nodes(TreeNode<T>*, TreeNode<T>*, TreeNode<T>*, TreeNode<T>*);
     void get_preorder_traversal(TreeNode<T>*);
     void get_posorder_traversal(TreeNode<T>*);
     void get_inorder_traversal(TreeNode<T>*);
-    TreeNode<T>* root;
+    bool is_leaf(TreeNode<T>*);
+    TreeNode<T>* find_parent(TreeNode<T>*);
+    TreeNode<T>* find_successor(TreeNode<T>*);
 };
 
 /// Destructor
@@ -75,7 +79,7 @@ bool BinarySearchTree<T>::is_empty(void) {
 
 /**
  * Complexity:
- * Time -> O(log n), where n is the number of elements in the Binary Search Tree
+ * Time -> O(n), where n is the number of elements in the Binary Search Tree 
  * Memory -> O(1)
  * 
  * Adds a new node into the Binary Search Tree
@@ -230,5 +234,149 @@ void BinarySearchTree<T>::get_inorder_traversal(TreeNode<T>* current_node) {
     get_inorder_traversal(current_node->left);
     std::cout << current_node->value << " ";
     get_inorder_traversal(current_node->right);
+}
+
+/**
+ * Complexity:
+ * Time -> O(1)
+ * Memory -> O(1)
+ * 
+ * Checks if the node is a leaf
+ * 
+ * @param node represents the node that will be checked
+ */ 
+template <typename T>
+bool BinarySearchTree<T>::is_leaf(TreeNode<T>* node) {
+    return !(node->left) && !(node->right);
+}
+
+/**
+ * Complexity:
+ * Time -> O(log n), where n is the number of elements in the Binary Search Tree
+ * Memory -> O(1)
+ * 
+ * Delete a node in the Binary Search Tree and reconnect the neccessary nodes to keep 
+ * the larger numbers on the right and the smaller numbers on the left of the affected nodes
+ * 
+ * @param value is the value that contains the TreeNode that will be deleted
+ */ 
+template <typename T>
+void BinarySearchTree<T>::delete_node(T value) {
+    TreeNode<T>* node_to_delete = nullptr;
+    TreeNode<T>* node_to_delete_parent = nullptr;
+    TreeNode<T>* successor = nullptr;
+    TreeNode<T>* successor_parent = nullptr;
+
+    if (!(node_to_delete = search_value(value))) { return; } // The value does not exist in the binary search tree
+    
+    node_to_delete_parent = find_parent(node_to_delete);
+
+    if (is_leaf(node_to_delete)) {
+        if (node_to_delete != root) {
+            (node_to_delete_parent->left == node_to_delete ? node_to_delete_parent->left : node_to_delete_parent->right) = nullptr;
+            delete node_to_delete;
+        } else {
+            delete root;
+            root = nullptr;
+        }
+        return;
+    }
+
+    if (!(node_to_delete->left && node_to_delete->right)) { // Only has one children the node to delete
+        if (node_to_delete != root) {
+            (node_to_delete_parent->left == node_to_delete ? node_to_delete_parent->left : node_to_delete_parent->right) = (node_to_delete->left ? node_to_delete->left : node_to_delete->right);
+        } else {
+            root = (root->left ? root->left : root->right);
+        }
+        delete node_to_delete;
+        return;
+    }
+
+    // The node to delete has to children, so let's find its successor
+    successor = find_successor(node_to_delete->right);
+    successor_parent = find_parent(successor);
+
+    successor->left = node_to_delete->left;
+    reconnect_nodes(node_to_delete, node_to_delete_parent, successor, successor_parent);
+    delete node_to_delete;
+}
+
+/**
+ * Complexity:
+ * Time -> O(log n)
+ * Memory -> O(1)
+ * 
+ * Looks for the given node's parent in the Binary Search Tree
+ * 
+ * @param node is the looked for node's son
+ * 
+ * @return the node's parent, or nullptr either the node is the root of the Binary Search Tree or the node does not exist.
+ */ 
+template <typename T>
+TreeNode<T>* BinarySearchTree<T>::find_parent(TreeNode<T>* node) {
+    if (!(node)) { return nullptr; } // Not a valid node
+
+    TreeNode<T>* parent = nullptr;
+    parent = root;
+    while (parent) {
+        if (parent->left == node || parent->right == node) {
+            return parent;
+        } else if (node->value > parent->value) {
+            parent = parent->right;
+        } else {
+            parent = parent->left;
+        }
+    }
+    return nullptr;
+}
+
+/**
+ * Complexity:
+ * Time -> O(log n)
+ * Meomory -> O(1)
+ * 
+ * Finds the next inorder successor of the node that will be deleted
+ * 
+ * @param possible_successor is the node to delete's right son
+ * 
+ * @return the next inorder successor of the node to delete
+ */ 
+template <typename T>
+TreeNode<T>* BinarySearchTree<T>::find_successor(TreeNode<T>* possible_successor) {
+    TreeNode<T>* successor = nullptr;
+    successor = possible_successor;
+    while (successor->left) {
+        successor = successor->left;
+    }
+    return successor;
+}
+
+/**
+ * Complexity:
+ * Time -> O(1)
+ * Memeory -> O(1)
+ * 
+ * Reconnects the neccessary nodes to keep the rules of the Binary Search Tree after delete a node in the Binary Search Tree
+ * 
+ * @param node_to_delete
+ * 
+ * @param node_to_delete_parent
+ * 
+ * @param successor
+ * 
+ * @param successor_parent
+ */ 
+template <typename T>
+void BinarySearchTree<T>::reconnect_nodes(TreeNode<T>* node_to_delete, TreeNode<T>* node_to_delete_parent, TreeNode<T>* successor, TreeNode<T>* successor_parent) {
+    if (node_to_delete != root) {
+        (node_to_delete_parent->left == node_to_delete ? node_to_delete_parent->left : node_to_delete_parent->right) = successor;
+    } else {
+        root = successor;
+    }
+
+    if (node_to_delete->right != successor) { // Avoid to create a loop in the Binary Search Tree
+        successor_parent->left = successor->right;
+        successor->right = node_to_delete->right;
+    }
 }
 #endif
